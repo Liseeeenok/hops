@@ -1,0 +1,30 @@
+.sign_in {
+    margin: 10vw auto;
+    font-family: Comfortaa;
+    font-size: 1vw;
+}
+
+.input {
+    border: 1px solid black;
+    margin-left: 1vw;
+    font-size: 1vw;
+    padding: 0.5vw;
+    border-radius: 10px;
+}
+
+.button_div {
+    display: flex;
+    justify-content: center;
+    margin-top: 1vw;
+}
+
+.button {
+    cursor: pointer;
+    background: white;
+    font-family: Comfortaa;
+    font-size: 20px;
+    border: 1px solid black;
+    padding: 0.5vw;
+    border-radius: 10px;
+    margin: 0 10px;
+}

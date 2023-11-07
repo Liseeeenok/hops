@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Система планирования занятости залов</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="../general.css">
+    <link rel="stylesheet" href="users.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="header">
+            <div class="header_menu">
+                <div class="header_menu_top">
+                    <div class="header_logo">
+                        <h1>ИДСТУ СО РАН</h1>
+                    </div>
+                    <div class="header_button">
+                        <a href="/">Залы</a>
+                    </div>
+                    <div class="header_button">
+                        <a href="" id="requests"></a>
+                    </div>
+                    <div class="header_button">
+                        <a href="" id="settings"></a>
+                    </div>
+                    <div class="header_button">
+                        <a href="" id="users"></a>
+                    </div>
+                </div>
+                <div class="header_menu_bottom">
+                    <a href="/authorization/sign_in.html" id="inp_name"></a>
+                </div>
+            </div>
+        </div>
+        <table id="table" class="table"></table>
+    </div>
+    <div id="popup_back_div"></div>
+    <div id="popup_div" class="popup_div"></div>
+    <div id="popup_div_2"></div>
+    <script src="users.js"></script>
+</body>
+
+</html>

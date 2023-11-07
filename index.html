@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Система планирования занятости залов</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="general.css">
+    <link rel="stylesheet" href="index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&display=swap" rel="stylesheet">
+</head>
+
+<body id='body'>
+    <div class="wrapper">
+        <div class="header" id="header">
+            <div class="header_menu">
+                <div class="header_menu_top">
+                    <div class="header_logo">
+                        <h1 id="header_logo">ИДСТУ СО РАН</h1>
+                    </div>
+                    <div class="header_button">
+                        <a href="/">Залы</a>
+                    </div>
+                    <div class="header_button">
+                        <a href="" id="requests"></a>
+                    </div>
+                    <div class="header_button">
+                        <a href="" id="settings"></a>
+                    </div>
+                    <div class="header_button">
+                        <a href="" id="users"></a>
+                    </div>
+                </div>
+                <div class="header_menu_bottom" id="authorization">
+                    <a href="/authorization/sign_in.html" id="inp_name"></a>
+                </div>
+            </div>
+        </div>
+        <div class="input_date_div"><text style="margin-right: 10px;">Показать мероприятия с </text>
+            <input id="input_start_date" class="input_date" type="date" />
+        </div>
+        <table id="table" class="table"></table>
+    </div>
+    <div id="popup_back_div"></div>
+    <div id="popup_div" class="popup_div"></div>
+    <div id="popup_div_2"></div>
+    <div id="loader_div" class="loader_div">
+        <image src="images/10.gif">
+    </div>
+    <div>
+        <image class="arrow_menu" id="arrow_menu" src="images/arrow_menu.png">
+    </div>
+    <script defer src="index.js"></script>
+</body>
+
+</html>

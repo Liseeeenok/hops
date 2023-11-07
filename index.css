@@ -1,0 +1,61 @@
+.navigation_arrows_right {
+    width: 25px;
+    cursor: pointer;
+}
+
+.navigation_arrows_left {
+    width: 25px;
+    rotate: 180deg;
+    cursor: pointer;
+}
+
+.td {
+    border: 1px solid black;
+    height: 200px;
+    cursor: pointer;
+}
+
+.die {
+    border: 1px solid black;
+    border-radius: 5px;
+    text-align: initial;
+    cursor: pointer;
+    margin: 1px 2px 5px 2px;
+}
+
+.input_date_div {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 1vw;
+}
+
+.output_date {
+    font-family: Comfortaa;
+    font-size: 18px;
+    padding: 2px;
+    margin-bottom: 2px;
+    margin-left: 2px;
+}
+
+.loader_div {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
+
+.add_nested_activities {
+    cursor: pointer;
+}
+
+@media (max-width: 1400px) {
+    .header {
+        transform: translateX(-320px);
+    }
+    .table {
+        margin: 5px 2vw 2vw 2vw;
+    }
+    .arrow_menu {
+        opacity: 1;
+    }
+}
