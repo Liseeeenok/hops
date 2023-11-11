@@ -64,8 +64,15 @@ function createTable() {
         arr_users = res_users.data.users
         html = "";
         tds = "";
-        tds += `<td class='tdh' style='width: 100px;'>
-            <text>Пользователи</text>
+        tds += `
+        <td class='tdh' style='width: 100px;'>
+            <text>Логин</text>
+        </td>
+        <td class='tdh' style='width: 100px;'>
+            <text>ФИО</text>
+        </td>
+        <td class='tdh' style='width: 100px;'>
+            <text>Доступ</text>
         </td>`;
         html += "<tr>" + tds + "</tr>";
         table.innerHTML = html;
@@ -73,7 +80,9 @@ function createTable() {
         tds = "";
         for (i in arr_users) {
             tds = "";
+            tds += "<td class='td'>" + arr_users[i].login + "</td>";
             tds += "<td class='td'>" + arr_users[i].surname + " " + arr_users[i].name + " " + arr_users[i].middle_name + "</td>";
+            tds += "<td class='td'>" + (arr_users[i].lvl_access == 1 ? "Пользователь" : "Админ") + "</td>";
             if (arr_users[i].approved == 1) {
                 color_tr = "#c4fcb4";
             } else {

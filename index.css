@@ -1,3 +1,33 @@
+*::-webkit-scrollbar {
+    width: 8px;               /* ширина scrollbar */
+    border: 0px solid rgba(255, 255, 255, .2); 
+    border-radius: 20px;    
+  }
+  *::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, .2);        /* цвет дорожки */
+    border: 0px solid rgba(255, 255, 255, .2); 
+    border-radius: 20px;    
+  }
+  *::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, .7);    /* цвет плашки */
+    border-radius: 20px;       /* закругления плашки */
+    border: 0px solid rgba(255, 255, 255, .7);  /* padding вокруг плашки */
+  }
+
+  body::-webkit-scrollbar {
+    width: 12px;               /* ширина scrollbar */
+  }
+  body::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, .2);        /* цвет дорожки */
+    border: 0px solid rgba(255, 255, 255, .5); 
+    border-radius: 0;    
+  }
+  body::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, .5);    /* цвет плашки */
+    border-radius: 20px;       /* закругления плашки */
+    border: 0px solid rgba(0, 0, 0, .7);  /* padding вокруг плашки */
+  }
+
 .navigation_arrows_right {
     width: 25px;
     cursor: pointer;

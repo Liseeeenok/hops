@@ -44,6 +44,10 @@ axios.post(url_user, article).then(res_user => {
                 <td><input type="password" id="password" size="40" class="input"></td>
             </tr>
         </table>
+        <div>
+            <input type="checkbox" id="personal_data">
+            <label for="personal_data">Даю свое согласие на обработку моих персональных данных,<br> в соответствии с Федеральным законом от 27.07.2006 года <br>№152-ФЗ «О персональных данных»</label>
+        </div>
         <div class="button_div" id="authorization">
             <div>
                 <button type="button" class="button" onclick="registerAcc()">Зарегистрироваться</button>
@@ -52,6 +56,7 @@ axios.post(url_user, article).then(res_user => {
                 <button class="button" style="font-size: 14px; border: none;" onclick="logInAcc()">Есть аккаунт? Войти</button>
             </div>
         </div>`;
+        personal_data = document.getElementById('personal_data')
         delete localStorage.token;
         delete localStorage.first_name;
         delete localStorage.last_name;
@@ -67,6 +72,7 @@ function logInAcc() {
 }
 
 function registerAcc() {
+    EMAIL_REGEXP = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu;
     url_register = `https://mypew.ru:4502/registration`;
     email = document.getElementById('email');
     login = document.getElementById('login');
@@ -75,6 +81,18 @@ function registerAcc() {
     inp_name = document.getElementById('name');
     middle_name = document.getElementById('middle_name');
     number = document.getElementById('number');
+    if (!EMAIL_REGEXP.test(email.value)) {
+        alert('Введите существующий email');
+        return;
+    }
+    if (!login.value || !password.value || !email.value || !surname.value || !inp_name.value || !middle_name.value || !number.value) {
+        alert('Нужно заполнить вся поля!');
+        return;
+    }
+    if (!personal_data.checked) {
+        alert('Для регистрации нужно дать согласие на обработку персональных данных!');
+        return;
+    }
     article = article = {
         "login": login.value,
         "password": password.value,
@@ -88,8 +106,8 @@ function registerAcc() {
         if (res_register.data.status == "Succes") {
             alert('Заявка на регистрацию отправлена, ожидайте ответа администратора');
         } else {
-            if (res_register.data.error == "Username is busy") alert('Логин уже занят');
-            else alert('Нужно заполнить все поля');
+            if (res_register.data.error == "Username is busy") alert('Логин уже занят.');
+            else alert('Нужно заполнить все поля!');
         }
     });
 }

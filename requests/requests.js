@@ -123,7 +123,7 @@ async function createTable(day, upd) {
         }
         tds = "";
         tds += "<td class='td'>" + data[i].number_hall + "</td>";
-        tds += "<td class='td'>" + data[i].date + "</td>";
+        tds += "<td class='td'>" + data[i].date.substr(8, 2) + '.' + data[i].date.substr(5, 2) + '.' + data[i].date.substr(0, 4) + "</td>";
         tds += "<td class='td'>" + data[i].event_type + "</td>";
         tds += "<td class='td'>" + data[i].event_name + "</td>";
         if (data[i].approved == 1) {
@@ -180,13 +180,13 @@ function open_event_info(event, i) {
     select_hall += `</select>`;
     arr_nested_activities = data[i].event_nested;
     list_nested_activities = "";
+    list_nested_activities = `<tr><td class="up_cell"><text>Вложенные мероприятия:</text></td><td id='nested_activities'>`;
     if (arr_nested_activities.length != 0) {
-        list_nested_activities = `<tr><td class="up_cell"><text>Вложенные мероприятия:</text></td><td>`;
         for (j in arr_nested_activities) {
-            list_nested_activities += `<text>${arr_nested_activities[j].time_start}-${arr_nested_activities[j].time_end} ${arr_nested_activities[j].event_name}</text><br>`;
+            list_nested_activities += `<text style="cursor: pointer;" onclick="openBook2Edit(event, ${j})">${arr_nested_activities[j].time_start}-${arr_nested_activities[j].time_end} ${arr_nested_activities[j].event_name}</text><br>`;
         }
-        list_nested_activities += `</td></tr>`;
     }
+    list_nested_activities += `</td></tr>`;
     popup_back_div.innerHTML = `<div class="popup_back" id="popup_back"></div>`;
     popup_div.innerHTML = `
     <div class="popup" id="popup">
@@ -259,6 +259,9 @@ function open_event_info(event, i) {
         </div>
     </div>`;
     event.stopPropagation();
+    nested_activities = document.getElementById('nested_activities');
+    add_nested_activities = `<text class="add_nested_activities" onclick="addNestedActivities(event)">+ добавить вложенное мероприятие</text>`;
+    nested_activities.innerHTML = nested_activities.innerHTML + add_nested_activities;
     input_number = document.getElementById('input_number');
     input_number.value = data[i].number_hall;
     input_event_type = document.getElementById('input_event_type');
@@ -303,7 +306,6 @@ function approveBook(event, i) {
     input_responsible = document.getElementById('input_responsible');
     input_phone_number = document.getElementById('input_phone_number');
     input_color = document.getElementById('input_color');
-    console.log(arr_nested_activities);
     for (j in arr_nested_activities) {
         arr_nested_activities[j].approved = 1;
     }
@@ -333,6 +335,100 @@ function approveBook(event, i) {
         createTable(start_day, true); //Перерисовывание таблицу
         closePopup(event);
     });
+}
+
+function openBook2Edit(event, index) {
+    event.stopPropagation();
+    console.log(index);
+    select = `<select class="input_date" id="input_event_type_2">`;
+    for (i in arr_event_type) {
+        select += `<option value="${arr_event_type[i].name}">${arr_event_type[i].name}</option>`;
+    }
+    select += `</select>`;
+    popup_div_2.innerHTML = `<div class="popup_back" id="popup_back_2"></div>
+    <div class="popup_2" id="popup_2">
+        <div class="exit">
+            <div><h1>Бронирование залов</h1></div>
+            <div class="exit_div" onclick='closePopup2(event)'><h1>X</h1></div>
+        </div>
+        <div class="event_info">
+            <div>
+                <table>
+                    <tr>
+                        <td><text>Время начала<mark>*</mark>: </text></td>
+                        <td><input class="input_date" type="time" value="${arr_nested_activities[index].time_start}" id="input_start_time_2"/></td>
+                    </tr>
+                    <tr>
+                        <td><text>Время окончания<mark>*</mark>: </text></td>
+                        <td><input class="input_date" type="time" value="${arr_nested_activities[index].time_end}" id="input_end_time_2"/></td>
+                    </tr>
+                    <tr>
+                        <td><text>Тип мероприятия<mark>*</mark>: </text></td>
+                        <td>${select}</td>
+                    </tr>
+                    <tr>
+                        <td><text>Название мероприятия<mark>*</mark>: </text></td>
+                        <td><textarea class="input_date" cols="40" rows="3" id="input_event_name_2"/></textarea></td>
+                    </tr>
+                    <tr>
+                        <td><text>Спикер<mark>*</mark>: </text></td>
+                        <td><input class="input_date" style="width: 100%;" type="text" id="input_speaker_2" value="${arr_nested_activities[index].speaker_fio}"/></td>
+                    </tr>
+                    <tr>
+                        <td><text>Описание мероприятия<mark>*</mark>:</text></td>
+                        <td><textarea class="input_date" cols="40" rows="5" id="input_description_2"/></textarea></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="button_div">
+                <button onclick="book2Save(event, ${index})" class="button_book">Сохранить</button>
+            </div>
+        </div>
+    </div>`;
+    event.stopPropagation();
+    input_event_name_2 = document.getElementById('input_event_name_2');
+    input_event_name_2.value = arr_nested_activities[index].event_name;
+    input_event_type_2 = document.getElementById('input_event_type_2');
+    input_event_type_2.value = arr_nested_activities[index].event_type;
+    input_description_2 = document.getElementById('input_description_2');
+    input_description_2.value = arr_nested_activities[index].event_description;
+    popup_2 = document.getElementById('popup_2');
+    popup_back_2 = document.getElementById('popup_back_2');
+    popup_2.addEventListener('click', (event) => {
+        event.stopPropagation();
+    });
+    popup_back_2.addEventListener('click', (event) => {
+        event.stopPropagation();
+        popup_div_2.innerHTML = "";
+    });
+}
+
+function book2Save(event, index) {
+    event.stopPropagation();
+    nested_activities = document.getElementById('nested_activities');
+    input_start_time_2 = document.getElementById('input_start_time_2');
+    input_end_time_2 = document.getElementById('input_end_time_2');
+    input_event_type_2 = document.getElementById('input_event_type_2');
+    input_event_name_2 = document.getElementById('input_event_name_2');
+    input_speaker_2 = document.getElementById('input_speaker_2');
+    input_description_2 = document.getElementById('input_description_2');
+    if (input_start_time_2.value == "" || input_end_time_2.value == "" || input_event_type_2.value == "" || input_event_name_2.value == "" || input_speaker_2.value == "" || input_description_2.value == "") {
+        alert('Нужно заполнить все поля отмеченные "*"!');
+        return;
+    }
+    closePopup2(event);
+    arr_nested_activities[index].time_start = input_start_time_2.value;
+    arr_nested_activities[index].time_end = input_end_time_2.value;
+    arr_nested_activities[index].event_type = input_event_type_2.value;
+    arr_nested_activities[index].event_name = input_event_name_2.value;
+    arr_nested_activities[index].speaker_fio = input_speaker_2.value;
+    arr_nested_activities[index].event_description = input_description_2.value;
+    html_text = "";
+    console.log(arr_nested_activities);
+    for (i in arr_nested_activities) {
+        html_text += `<text style="cursor: pointer;" onclick="openBook2Edit(event, ${i})">${arr_nested_activities[i].time_start}-${arr_nested_activities[i].time_end} ${arr_nested_activities[i].event_name}</text><br>`;
+    }
+    nested_activities.innerHTML = html_text + add_nested_activities;
 }
 
 function cancelBook(event, i) {
@@ -366,6 +462,7 @@ function saveBook(event, i) {
     input_responsible = document.getElementById('input_responsible');
     input_phone_number = document.getElementById('input_phone_number');
     input_color = document.getElementById('input_color');
+    console.log(arr_nested_activities);
     article_update = {
         "jwt": localStorage.getItem('token'),
         "method": "update",
@@ -432,4 +529,84 @@ function disApproveBook(event, i) {
         createTable(start_day, true); //Перерисовывание таблицу
         closePopup(event);
     });
+}
+
+function addNestedActivities(event) {
+    select = `<select class="input_date" id="input_event_type_2">`;
+    for (i in arr_event_type) {
+        select += `<option value="${arr_event_type[i].name}">${arr_event_type[i].name}</option>`;
+    }
+    select += `</select>`;
+    popup_div_2.innerHTML = `<div class="popup_back" id="popup_back_2"></div>
+    <div class="popup_2" id="popup_2">
+        <div class="exit">
+            <div><h1>Бронирование залов</h1></div>
+            <div class="exit_div" onclick='closePopup2(event)'><h1>X</h1></div>
+        </div>
+        <div class="event_info">
+            <div>
+                <table>
+                    <tr>
+                        <td><text>Время начала<mark>*</mark>: </text></td>
+                        <td><input class="input_date" type="time" value="08:00" id="input_start_time_2"/></td>
+                    </tr>
+                    <tr>
+                        <td><text>Время окончания<mark>*</mark>: </text></td>
+                        <td><input class="input_date" type="time" id="input_end_time_2"/></td>
+                    </tr>
+                    <tr>
+                        <td><text>Тип мероприятия<mark>*</mark>: </text></td>
+                        <td>${select}</td>
+                    </tr>
+                    <tr>
+                        <td><text>Название мероприятия<mark>*</mark>: </text></td>
+                        <td><textarea class="input_date" cols="40" rows="3" id="input_event_name_2"/></textarea></td>
+                    </tr>
+                    <tr>
+                        <td><text>Спикер<mark>*</mark>: </text></td>
+                        <td><input class="input_date" style="width: 100%;" type="text" id="input_speaker_2"/></td>
+                    </tr>
+                    <tr>
+                        <td><text>Описание мероприятия<mark>*</mark>:</text></td>
+                        <td><textarea class="input_date" cols="40" rows="5" id="input_description_2"/></textarea></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="button_div">
+                <button onclick="book2(event)" class="button_book">Забронировать</button>
+            </div>
+        </div>
+    </div>`;
+    event.stopPropagation();
+    popup_2 = document.getElementById('popup_2');
+    popup_back_2 = document.getElementById('popup_back_2');
+    popup_2.addEventListener('click', (event) => {
+        event.stopPropagation();
+    });
+    popup_back_2.addEventListener('click', (event) => {
+        event.stopPropagation();
+        popup_div_2.innerHTML = "";
+    });
+}
+
+function book2(event) {
+    event.stopPropagation();
+    input_start_time_2 = document.getElementById('input_start_time_2');
+    input_end_time_2 = document.getElementById('input_end_time_2');
+    input_event_type_2 = document.getElementById('input_event_type_2');
+    input_event_name_2 = document.getElementById('input_event_name_2');
+    input_speaker_2 = document.getElementById('input_speaker_2');
+    input_description_2 = document.getElementById('input_description_2');
+    if (input_start_time_2.value == "" || input_end_time_2.value == "" || input_event_type_2.value == "" || input_event_name_2.value == "" || input_speaker_2.value == "" || input_description_2.value == "") {
+        alert('Нужно заполнить все поля отмеченные "*"!');
+        return;
+    }
+    closePopup2(event);
+    arr_nested_activities.push({ "id": -1, "time_start": input_start_time_2.value, "time_end": input_end_time_2.value, "event_type": input_event_type_2.value, "event_name": input_event_name_2.value, "speaker_fio": input_speaker_2.value, "event_description": input_description_2.value, "approved": 1 });
+    html_text = "";
+    console.log(arr_nested_activities);
+    for (i in arr_nested_activities) {
+        html_text += `<text style="cursor: pointer;" onclick="openBook2Edit(event, ${i})">${arr_nested_activities[i].time_start}-${arr_nested_activities[i].time_end} ${arr_nested_activities[i].event_name}</text><br>`;
+    }
+    nested_activities.innerHTML = html_text + add_nested_activities;
 }

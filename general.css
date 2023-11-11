@@ -5,10 +5,8 @@
 }
 
 body {
-    background-size: cover;
-    //background-image: url(images/70b.jpg);
-    background-repeat: no-repeat;
     width: 100%;
+    background-color: #fafafa;
 }
 
 a {
@@ -46,8 +44,8 @@ mark {
     margin: 5px 2vw 2vw calc(2vw + 300px);
     border-collapse: collapse;
     text-align: center;
-    background-color: white;
     transition: margin 1s;
+    background-color: #fafafa;
 }
 
 .tdh {
