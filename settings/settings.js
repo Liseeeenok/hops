@@ -1,6 +1,6 @@
 //---------------[AUTH]---------------
-url_login = 'https://mypew.ru:4502/login';
-url_user = 'https://mypew.ru:4502/user';
+url_login = 'https://hops.icc.ru:4502/login';
+url_user = 'https://hops.icc.ru:4502/user';
 
 article = {
     "jwt": localStorage.getItem('token'),
@@ -27,7 +27,7 @@ axios.post(url_user, article).then(res_user => {
             users.innerHTML = 'Пользователи';
         } else {
             alert('Для просмотра страницы недостаточно прав!');
-            window.onload('https://hops.mypew.ru/');
+            window.onload('https://hops.icc.ru/');
         }
     } else {
         delete localStorage.token;

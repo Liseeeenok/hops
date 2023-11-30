@@ -1,6 +1,6 @@
 //---------------[AUTH]---------------
-url_login = 'https://mypew.ru:4502/login';
-url_user = 'https://mypew.ru:4502/user';
+url_login = 'https://hops.icc.ru:4502/login';
+url_user = 'https://hops.icc.ru:4502/user';
 
 article = {
     "jwt": localStorage.getItem('token'),
@@ -28,7 +28,7 @@ axios.post(url_user, article).then(res_user => {
             users.innerHTML = 'Пользователи';
         } else {
             alert('Для просмотра страницы недостаточно прав!');
-            location.replace('https://hops.mypew.ru/');
+            location.replace('https://hops.icc.ru/');
         }
     } else {
         delete localStorage.token;
@@ -39,7 +39,7 @@ axios.post(url_user, article).then(res_user => {
         inp_name = document.getElementById('inp_name');
         inp_name.innerHTML = `Войти`;
         alert('Время сессии истекло, авторизируйтесь повторно!');
-        location.replace('https://hops.mypew.ru/authorization/sign_in.html');
+        location.replace('https://hops.icc.ru/authorization/sign_in.html');
     }
 });
 //------------------------------------

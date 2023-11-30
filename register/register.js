@@ -1,7 +1,7 @@
 sign_in = document.getElementById('sign_in');
 //---------------[AUTH]---------------
-url_login = 'https://mypew.ru:4502/login';
-url_user = 'https://mypew.ru:4502/user';
+url_login = 'https://hops.icc.ru:4502/login';
+url_user = 'https://hops.icc.ru:4502/user';
 
 article = {
     "jwt": localStorage.getItem('token'),
@@ -11,7 +11,7 @@ article = {
 axios.post(url_user, article).then(res_user => {
     console.log(res_user.data);
     if (res_user.data.token_verify) {
-        location.replace('https://hops.mypew.ru/authorization/sign_in.html');
+        location.replace('https://hops.icc.ru/authorization/sign_in.html');
     } else {
         sign_in.innerHTML = `
         <table>
@@ -68,12 +68,12 @@ axios.post(url_user, article).then(res_user => {
 });
 //------------------------------------
 function logInAcc() {
-    location.replace('https://hops.mypew.ru/authorization/sign_in.html');
+    location.replace('https://hops.icc.ru/authorization/sign_in.html');
 }
 
 function registerAcc() {
     EMAIL_REGEXP = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu;
-    url_register = `https://mypew.ru:4502/registration`;
+    url_register = `https://hops.icc.ru:4502/registration`;
     email = document.getElementById('email');
     login = document.getElementById('login');
     password = document.getElementById('password');

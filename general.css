@@ -207,6 +207,11 @@ mark {
     border-radius: 10px;
     cursor: pointer;
     margin: 0 15px;
+
+}
+
+.button_book:hover {
+    transform: scale(1.05);
 }
 
 .arrow_menu {

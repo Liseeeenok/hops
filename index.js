@@ -1,7 +1,7 @@
 //---------------[AUTH]---------------
-url_login = 'https://mypew.ru:4502/login';
-url_user = 'https://mypew.ru:4502/user';
-url_base = 'https://hops.mypew.ru/';
+url_login = 'https://hops.icc.ru:4502/login';
+url_user = 'https://hops.icc.ru:4502/user';
+url_base = 'https://hops.icc.ru/';
 
 article = {
     "jwt": localStorage.getItem('token'),
@@ -61,13 +61,13 @@ start_day = ""; //Начальный день для импута
 difference_day = 0; //Изменение дней для листалок
 arr_nested_activities = []; //Массив вложенных мероприятий
 arr_event_type = []; //Массив типов мероприятий
-url_type = 'https://mypew.ru:4502/event_type'; //Апи для типов МП
+url_type = 'https://hops.icc.ru:4502/event_type'; //Апи для типов МП
 axios.get(url_type).then(res => { //Запрос на получение типов МП
     arr_event_type = res.data;
     console.log(arr_event_type);
 });
 arr_number_hall = []; //Массив номеров залов
-url_hall = 'https://mypew.ru:4502/hall'; //Апи для номеров залов
+url_hall = 'https://hops.icc.ru:4502/hall'; //Апи для номеров залов
 axios.get(url_hall).then(res => { //Запрос на получение
     arr_number_hall = res.data;
 });
@@ -96,7 +96,7 @@ function createTable(start_day, difference_day, count_day) { //Функция с
     html = "";
     tds = "";
     arr_day = [];
-    tds += "<td class='navigation_arrows' style='width: 25px;' onclick='flippingTable(-1)'>" + "<image class='navigation_arrows_left' src='https://hops.mypew.ru/images/arrow.png'>" + "</td>";
+    tds += "<td class='navigation_arrows' style='width: 25px;' onclick='flippingTable(-1)'>" + "<image class='navigation_arrows_left' src='https://hops.icc.ru/images/arrow.png'>" + "</td>";
     tds += "<td class='tdh' style='width: 70px;'>" + "Номер зала" + "</td>";
     for (i = 0; i < count_day; i++) {
         tds += "<td class='tdh'><table class='table_in'><tr><td>" + dt.toLocaleDateString() + "</td></tr><tr><td>" + name_day(dt.getDay()) + "</td></tr></table></td>";
@@ -104,10 +104,10 @@ function createTable(start_day, difference_day, count_day) { //Функция с
         dt.setDate(dt.getDate() + 1);
     }
     console.log(arr_day)
-    tds += "<td style='width: 25px;' onclick='flippingTable(1)'>" + "<image class='navigation_arrows_right' src='https://hops.mypew.ru/images/arrow.png'>" + "</td>";
+    tds += "<td style='width: 25px;' onclick='flippingTable(1)'>" + "<image class='navigation_arrows_right' src='https://hops.icc.ru/images/arrow.png'>" + "</td>";
     html += "<tr>" + tds + "</tr>";
     table.innerHTML = html;
-    url = `https://mypew.ru:4502/request?date_start=${st_dt}&date_finish=${end_dt}`;
+    url = `https://hops.icc.ru:4502/request?date_start=${st_dt}&date_finish=${end_dt}`;
     axios.get(url).then(res => {
         data = res.data;
         console.log(res.data);
@@ -256,7 +256,7 @@ function open_reg_info(event, i, day) {
                     </table>
                 </div>
                 <div class="button_div">
-                    <a href="https://hops.mypew.ru/authorization/sign_in.html" class="button_book">Войти</a>
+                    <a href="https://hops.icc.ru/authorization/sign_in.html" class="button_book">Войти</a>
                 </div>
             </div>`;
             event.stopPropagation();
@@ -463,7 +463,7 @@ function book(event) {
         alert('Название должно быть меньше 256 символов!');
         return;
     }
-    url_send = `https://mypew.ru:4502/request`;
+    url_send = `https://hops.icc.ru:4502/request`;
     send_event = {
         "jwt": localStorage.getItem('token'),
         "method": "insert",

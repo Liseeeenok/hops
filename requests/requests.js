@@ -1,6 +1,6 @@
 //---------------[AUTH]---------------
-url_login = 'https://mypew.ru:4502/login';
-url_user = 'https://mypew.ru:4502/user';
+url_login = 'https://hops.icc.ru:4502/login';
+url_user = 'https://hops.icc.ru:4502/user';
 
 article = {
     "jwt": localStorage.getItem('token'),
@@ -28,7 +28,7 @@ axios.post(url_user, article).then(res_user => {
             users.innerHTML = 'Пользователи';
         } else {
             alert('Для просмотра страницы недостаточно прав!');
-            location.replace('https://hops.mypew.ru/');
+            location.replace('https://hops.icc.ru/');
         }
     } else {
         delete localStorage.token;
@@ -39,7 +39,7 @@ axios.post(url_user, article).then(res_user => {
         inp_name = document.getElementById('inp_name');
         inp_name.innerHTML = `Войти`;
         alert('Время сессии истекло, авторизируйтесь повторно!');
-        location.replace('https://hops.mypew.ru/authorization/sign_in.html');
+        location.replace('https://hops.icc.ru/authorization/sign_in.html');
     }
 });
 //------------------------------------
@@ -53,10 +53,10 @@ popup_back_div = document.getElementById('popup_back_div') //Див затемн
 arr_del_nested_event = []; //Массив удаляемыех вложенных мероприятий
 arr_event_type = []; //Массив типов мероприятий
 arr_number_hall = []; //Массив номеров залов
-url_type = 'https://mypew.ru:4502/event_type';
+url_type = 'https://hops.icc.ru:4502/event_type';
 axios.get(url_type).then(res => {
     arr_event_type = res.data;
-    url_hall = 'https://mypew.ru:4502/hall';
+    url_hall = 'https://hops.icc.ru:4502/hall';
     axios.get(url_hall).then(res => {
         arr_number_hall = res.data;
         createTable(new Date(), true);
@@ -105,7 +105,7 @@ async function createTable(day, upd) {
     html += "<tr>" + tds + "</tr>";
     table.innerHTML = html;
     st_dt = dtz.toLocaleDateString(); //Начальный день
-    url_request = `https://mypew.ru:4502/request`;
+    url_request = `https://hops.icc.ru:4502/request`;
     article_request = { "jwt": localStorage.getItem('token'), "method": "select", "date_start": st_dt };
     if (upd) {
         await axios.post(url_request, article_request).then(res => {
@@ -309,7 +309,7 @@ function closePopup2(event) {
 }
 
 function approveBook(event, i) {
-    url_update = 'https://mypew.ru:4502/request';
+    url_update = 'https://hops.icc.ru:4502/request';
     input_number = document.getElementById('input_number');
     input_date = document.getElementById('input_date');
     input_start_time = document.getElementById('input_start_time');
@@ -484,7 +484,7 @@ function book2Del(event, index) {
 }
 
 function cancelBook(event, i) {
-    url_delete = 'https://mypew.ru:4502/request';
+    url_delete = 'https://hops.icc.ru:4502/request';
     article_delete = {
         "jwt": localStorage.getItem('token'),
         "method": "delete",
@@ -503,7 +503,7 @@ function cancelBook(event, i) {
 }
 
 function saveBook(event, i) {
-    url_update = 'https://mypew.ru:4502/request';
+    url_update = 'https://hops.icc.ru:4502/request';
     input_number = document.getElementById('input_number');
     input_date = document.getElementById('input_date');
     input_start_time = document.getElementById('input_start_time');
@@ -516,7 +516,7 @@ function saveBook(event, i) {
     input_color = document.getElementById('input_color');
     console.log(arr_nested_activities);
     if (arr_del_nested_event.length != 0) {
-        url_delete = 'https://mypew.ru:4502/request';
+        url_delete = 'https://hops.icc.ru:4502/request';
         article_delete = {
             "jwt": localStorage.getItem('token'),
             "method": "delete",
@@ -558,7 +558,7 @@ function saveBook(event, i) {
 }
 
 function disApproveBook(event, i) {
-    url_update = 'https://mypew.ru:4502/request';
+    url_update = 'https://hops.icc.ru:4502/request';
     input_number = document.getElementById('input_number');
     input_date = document.getElementById('input_date');
     input_start_time = document.getElementById('input_start_time');

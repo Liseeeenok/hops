@@ -1,7 +1,7 @@
 sign_in = document.getElementById('sign_in');
 //---------------[AUTH]---------------
-url_login = 'https://mypew.ru:4502/login';
-url_user = 'https://mypew.ru:4502/user';
+url_login = 'https://hops.icc.ru:4502/login';
+url_user = 'https://hops.icc.ru:4502/user';
 
 article = {
     "jwt": localStorage.getItem('token'),
@@ -84,7 +84,7 @@ function logOutAcc() {
 }
 
 function registerAcc() {
-    location.replace('https://hops.mypew.ru/register/register.html');
+    location.replace('https://hops.icc.ru/register/register.html');
 }
 
 async function logInAcc() {

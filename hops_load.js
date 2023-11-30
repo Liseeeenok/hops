@@ -36,17 +36,17 @@ function createTable(start_day, difference_day, count_day) { //Функция с
     html = "";
     tds = "";
     arr_day = [];
-    tds += "<td class='navigation_arrows' style='width: 25px;' onclick='flippingTable(-1)'>" + "<image class='navigation_arrows_left' src='https://hops.mypew.ru/images/arrow.png'>" + "</td>";
+    tds += "<td class='navigation_arrows' style='width: 25px;' onclick='flippingTable(-1)'>" + "<image class='navigation_arrows_left' src='https://hops.icc.ru/images/arrow.png'>" + "</td>";
     tds += "<td class='tdh' style='width: 70px;'>" + "Номер зала" + "</td>";
     for (i = 0; i < count_day; i++) {
         tds += "<td class='tdh'><table class='table_in'><tr><td>" + dt.toLocaleDateString() + "</td></tr><tr><td>" + name_day(dt.getDay()) + "</td></tr></table></td>";
         arr_day.push(dt.toLocaleDateString().substr(6, 4) + '-' + dt.toLocaleDateString().substr(3, 2) + '-' + dt.toLocaleDateString().substr(0, 2));
         dt.setDate(dt.getDate() + 1);
     }
-    tds += "<td style='width: 25px;' onclick='flippingTable(1)'>" + "<image class='navigation_arrows_right' src='https://hops.mypew.ru/images/arrow.png'>" + "</td>";
+    tds += "<td style='width: 25px;' onclick='flippingTable(1)'>" + "<image class='navigation_arrows_right' src='https://hops.icc.ru/images/arrow.png'>" + "</td>";
     html += "<tr>" + tds + "</tr>";
     table.innerHTML = html;
-    url = `https://mypew.ru:4502/request?date_start=${st_dt}&date_finish=${end_dt}`;
+    url = `https://hops.icc.ru:4502/request?date_start=${st_dt}&date_finish=${end_dt}`;
     axios.get(url).then(res => {
         data = res.data;
         html = "";
@@ -237,7 +237,7 @@ function open_reg_info(event, i, day) {
                     </table>
                 </div>
                 <div class="button_div">
-                    <a href="https://hops.mypew.ru/authorization/sign_in.html" class="button_book">Войти</a>
+                    <a href="https://hops.icc.ru/authorization/sign_in.html" class="button_book">Войти</a>
                 </div>
             </div>`;
     event.stopPropagation();
