@@ -50,6 +50,7 @@ popup_div = document.getElementById('popup_div'); //Див всплывающе�
 popup_div_2 = document.getElementById('popup_div_2'); //Див второго всплывающего popup'а
 popup_back_div = document.getElementById('popup_back_div') //Див затемнения
 //------------------------------------
+arr_del_nested_event = []; //Массив удаляемыех вложенных мероприятий
 arr_event_type = []; //Массив типов мероприятий
 arr_number_hall = []; //Массив номеров залов
 url_type = 'https://mypew.ru:4502/event_type';
@@ -183,7 +184,7 @@ function open_event_info(event, i) {
     list_nested_activities = `<tr><td class="up_cell"><text>Вложенные мероприятия:</text></td><td id='nested_activities'>`;
     if (arr_nested_activities.length != 0) {
         for (j in arr_nested_activities) {
-            list_nested_activities += `<text style="cursor: pointer;" onclick="openBook2Edit(event, ${j})">${arr_nested_activities[j].time_start}-${arr_nested_activities[j].time_end} ${arr_nested_activities[j].event_name}</text><br>`;
+            list_nested_activities += `<div class="die_nested" style="background-color: #${arr_nested_activities[j].color}" onclick="openBook2Edit(event, ${j})">${arr_nested_activities[j].time_start}-${arr_nested_activities[j].time_end} ${arr_nested_activities[j].event_name}</div>`;
         }
     }
     list_nested_activities += `</td></tr>`;
@@ -260,12 +261,13 @@ function open_event_info(event, i) {
     </div>`;
     event.stopPropagation();
     nested_activities = document.getElementById('nested_activities');
-    add_nested_activities = `<text class="add_nested_activities" onclick="addNestedActivities(event)">+ добавить вложенное мероприятие</text>`;
+    add_nested_activities = `<div class="die_nested" onclick="addNestedActivities(event)">+ добавить вложенное мероприятие</div>`;
     nested_activities.innerHTML = nested_activities.innerHTML + add_nested_activities;
     input_number = document.getElementById('input_number');
     input_number.value = data[i].number_hall;
     input_event_type = document.getElementById('input_event_type');
     input_event_type.value = data[i].event_type;
+    input_event_type.addEventListener('change', () => { changeColor() });
     input_event_name = document.getElementById('input_event_name');
     input_event_name.value = data[i].event_name;
     input_description = document.getElementById('input_description');
@@ -280,6 +282,18 @@ function open_event_info(event, i) {
         closePopup(event);
     });
     */
+}
+
+function changeColor() {
+    input_event_type = document.getElementById('input_event_type');
+    input_color = document.getElementById('input_color');
+    backgroun_color = '6f6f6f';
+    for (i in arr_event_type) {
+        if (arr_event_type[i].name == input_event_type.value) {
+            background_color = '#' + arr_event_type[i].color;
+        }
+    }
+    input_color.value = background_color;
 }
 
 function closePopup(event) {
@@ -378,10 +392,15 @@ function openBook2Edit(event, index) {
                         <td><text>Описание мероприятия<mark>*</mark>:</text></td>
                         <td><textarea class="input_date" cols="40" rows="5" id="input_description_2"/></textarea></td>
                     </tr>
+                    <tr>
+                        <td><text>Цвет мероприятия:</text></td>
+                        <td><input type="color" class="input_date" id="input_color_2" value="#${arr_nested_activities[index].color}"/></td>
+                    </tr>
                 </table>
             </div>
             <div class="button_div">
                 <button onclick="book2Save(event, ${index})" class="button_book">Сохранить</button>
+                <button onclick="book2Del(event, ${index})" class="button_book" style="background-color: #d95a3e;">Удалить</button>
             </div>
         </div>
     </div>`;
@@ -390,6 +409,7 @@ function openBook2Edit(event, index) {
     input_event_name_2.value = arr_nested_activities[index].event_name;
     input_event_type_2 = document.getElementById('input_event_type_2');
     input_event_type_2.value = arr_nested_activities[index].event_type;
+    input_event_type_2.addEventListener('change', () => { changeColor2() });
     input_description_2 = document.getElementById('input_description_2');
     input_description_2.value = arr_nested_activities[index].event_description;
     popup_2 = document.getElementById('popup_2');
@@ -397,10 +417,12 @@ function openBook2Edit(event, index) {
     popup_2.addEventListener('click', (event) => {
         event.stopPropagation();
     });
+    /*
     popup_back_2.addEventListener('click', (event) => {
         event.stopPropagation();
         popup_div_2.innerHTML = "";
     });
+    */
 }
 
 function book2Save(event, index) {
@@ -412,6 +434,7 @@ function book2Save(event, index) {
     input_event_name_2 = document.getElementById('input_event_name_2');
     input_speaker_2 = document.getElementById('input_speaker_2');
     input_description_2 = document.getElementById('input_description_2');
+    input_color_2 = document.getElementById('input_color_2');
     if (input_start_time_2.value == "" || input_end_time_2.value == "" || input_event_type_2.value == "" || input_event_name_2.value == "" || input_speaker_2.value == "" || input_description_2.value == "") {
         alert('Нужно заполнить все поля отмеченные "*"!');
         return;
@@ -423,10 +446,39 @@ function book2Save(event, index) {
     arr_nested_activities[index].event_name = input_event_name_2.value;
     arr_nested_activities[index].speaker_fio = input_speaker_2.value;
     arr_nested_activities[index].event_description = input_description_2.value;
+    arr_nested_activities[index].color = input_color_2.value.substr(1, 8);
+    ///--------------------------------------------
+
     html_text = "";
     console.log(arr_nested_activities);
     for (i in arr_nested_activities) {
-        html_text += `<text style="cursor: pointer;" onclick="openBook2Edit(event, ${i})">${arr_nested_activities[i].time_start}-${arr_nested_activities[i].time_end} ${arr_nested_activities[i].event_name}</text><br>`;
+        html_text += `<div class="die_nested" style="background-color: #${arr_nested_activities[i].color}" onclick="openBook2Edit(event, ${i})">${arr_nested_activities[i].time_start}-${arr_nested_activities[i].time_end} ${arr_nested_activities[i].event_name}</div>`;
+    }
+    nested_activities.innerHTML = html_text + add_nested_activities;
+}
+
+function changeColor2() {
+    input_event_type_2 = document.getElementById('input_event_type_2');
+    input_color_2 = document.getElementById('input_color_2');
+    backgroun_color = '6f6f6f';
+    for (i in arr_event_type) {
+        if (arr_event_type[i].name == input_event_type_2.value) {
+            background_color = '#' + arr_event_type[i].color;
+        }
+    }
+    input_color_2.value = background_color;
+}
+
+
+function book2Del(event, index) {
+    event.stopPropagation();
+    closePopup2(event);
+    html_text = "";
+    console.log(arr_nested_activities);
+    arr_del_nested_event.push(arr_nested_activities[index].id);
+    arr_nested_activities.splice(index, 1);
+    for (i in arr_nested_activities) {
+        html_text += `<div class="die_nested" style="background-color: #${arr_nested_activities[i].color}" onclick="openBook2Edit(event, ${i})">${arr_nested_activities[i].time_start}-${arr_nested_activities[i].time_end} ${arr_nested_activities[i].event_name}</div>`;
     }
     nested_activities.innerHTML = html_text + add_nested_activities;
 }
@@ -463,6 +515,20 @@ function saveBook(event, i) {
     input_phone_number = document.getElementById('input_phone_number');
     input_color = document.getElementById('input_color');
     console.log(arr_nested_activities);
+    if (arr_del_nested_event.length != 0) {
+        url_delete = 'https://mypew.ru:4502/request';
+        article_delete = {
+            "jwt": localStorage.getItem('token'),
+            "method": "delete",
+            "request": {
+                "id_event_nested": arr_del_nested_event
+            }
+        }
+        axios.post(url_delete, article_delete).then(res => {
+            console.log(article_delete);
+            console.log(res);
+        });
+    }
     article_update = {
         "jwt": localStorage.getItem('token'),
         "method": "update",
@@ -606,7 +672,7 @@ function book2(event) {
     html_text = "";
     console.log(arr_nested_activities);
     for (i in arr_nested_activities) {
-        html_text += `<text style="cursor: pointer;" onclick="openBook2Edit(event, ${i})">${arr_nested_activities[i].time_start}-${arr_nested_activities[i].time_end} ${arr_nested_activities[i].event_name}</text><br>`;
+        html_text += `<div class="die_nested" style="background-color: #${arr_nested_activities[i].color}" onclick="openBook2Edit(event, ${i})">${arr_nested_activities[i].time_start}-${arr_nested_activities[i].time_end} ${arr_nested_activities[i].event_name}</div>`;
     }
     nested_activities.innerHTML = html_text + add_nested_activities;
 }

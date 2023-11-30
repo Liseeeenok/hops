@@ -170,9 +170,25 @@ mark {
     width: fit-content;
     cursor: pointer;
 }
-
+/*
 .up_cell {
     vertical-align: top;
+}
+*/
+.die_nested {
+    color: #1B1B1E;
+    font-family: Comfortaa;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 10px;
+    background-color: antiquewhite;
+    border-radius: 5px;
+    margin: 3px 0;
+    box-shadow: #6f6f6f 0px 0px 7px 0px;
+}
+
+.die_nested:hover {
+    transform: scale(1.02);
 }
 
 .button_div {

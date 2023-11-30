@@ -8,38 +8,36 @@ article = {
     "method": "select",
     "method_type": "user info"
 };
-if (document.location.href == url_base) {
-    axios.post(url_user, article).then(res_user => {
-        console.log(res_user.data);
-        if (res_user.data.token_verify) {
-            localStorage.setItem('first_name', res_user.data.user.name);
-            localStorage.setItem('last_name', res_user.data.user.surname);
-            localStorage.setItem('middle_name', res_user.data.user.middle_name);
-            localStorage.setItem('phone_number', res_user.data.user.number);
-            inp_name = document.getElementById('inp_name');
-            inp_name.innerHTML = `${res_user.data.user.name} ${res_user.data.user.surname}`;
-            if (res_user.data.user.lvl_access == 2) {
-                requests = document.getElementById('requests');
-                requests.href = '/requests/requests.html';
-                requests.innerHTML = 'Запросы';
-                settings = document.getElementById('settings');
-                settings.href = '/settings/settings.html';
-                settings.innerHTML = 'Настройки';
-                users = document.getElementById('users');
-                users.href = '/users/users.html';
-                users.innerHTML = 'Пользователи';
-            }
-        } else {
-            delete localStorage.token;
-            delete localStorage.first_name;
-            delete localStorage.last_name;
-            delete localStorage.middle_name;
-            delete localStorage.phone_number;
-            inp_name = document.getElementById('inp_name');
-            inp_name.innerHTML = `Войти`;
+axios.post(url_user, article).then(res_user => {
+    console.log(res_user.data);
+    if (res_user.data.token_verify) {
+        localStorage.setItem('first_name', res_user.data.user.name);
+        localStorage.setItem('last_name', res_user.data.user.surname);
+        localStorage.setItem('middle_name', res_user.data.user.middle_name);
+        localStorage.setItem('phone_number', res_user.data.user.number);
+        inp_name = document.getElementById('inp_name');
+        inp_name.innerHTML = `${res_user.data.user.name} ${res_user.data.user.surname}`;
+        if (res_user.data.user.lvl_access == 2) {
+            requests = document.getElementById('requests');
+            requests.href = '/requests/requests.html';
+            requests.innerHTML = 'Запросы';
+            settings = document.getElementById('settings');
+            settings.href = '/settings/settings.html';
+            settings.innerHTML = 'Настройки';
+            users = document.getElementById('users');
+            users.href = '/users/users.html';
+            users.innerHTML = 'Пользователи';
         }
-    });
-};
+    } else {
+        delete localStorage.token;
+        delete localStorage.first_name;
+        delete localStorage.last_name;
+        delete localStorage.middle_name;
+        delete localStorage.phone_number;
+        inp_name = document.getElementById('inp_name');
+        inp_name.innerHTML = `Войти`;
+    }
+});
 //------------------------------------
 //---------------[HTML]---------------
 table = document.getElementById('table'); //Получение html элемента таблицы
@@ -47,10 +45,9 @@ input_start_date = document.getElementById('input_start_date'); //Инпут д�
 popup_div = document.getElementById('popup_div'); //Див всплывающего popup'а
 popup_div_2 = document.getElementById('popup_div_2'); //Див второго всплывающего popup'а
 loader_div = document.getElementById('loader_div'); //Див лоудера
-popup_back_div = document.getElementById('popup_back_div') //Диз затемнения
+popup_back_div = document.getElementById('popup_back_div') //Див затемнения
 //------------------------------------
 //---------------[DATA]---------------
-console.log(window.innerWidth);
 if (window.innerWidth > 1000) {
     count_day = 5; //Кол-во дней для запроса
 } else if (window.innerWidth > 940) {
@@ -65,8 +62,9 @@ difference_day = 0; //Изменение дней для листалок
 arr_nested_activities = []; //Массив вложенных мероприятий
 arr_event_type = []; //Массив типов мероприятий
 url_type = 'https://mypew.ru:4502/event_type'; //Апи для типов МП
-axios.get(url_type).then(res => { //Запрос на получение
+axios.get(url_type).then(res => { //Запрос на получение типов МП
     arr_event_type = res.data;
+    console.log(arr_event_type);
 });
 arr_number_hall = []; //Массив номеров залов
 url_hall = 'https://mypew.ru:4502/hall'; //Апи для номеров залов
@@ -74,17 +72,12 @@ axios.get(url_hall).then(res => { //Запрос на получение
     arr_number_hall = res.data;
 });
 //------------------------------------
-if (document.location.href == url_base) {
-    input_start_date.addEventListener('change', () => { //Прослушиваем изменение даты в инпуте
-        table.innerHTML = ""; //Обнуляем таблицу
-        start_day = input_start_date.value; //Находим начальную дату
-        difference_day = 0; //Обнуляем изменение даты
-        createTable(start_day, difference_day, count_day); //Перерисовывание таблицу
-    });
-}
-else {
-    table.style.margin = "5px 2vw 2vw 2vw";
-};
+input_start_date.addEventListener('change', () => { //Прослушиваем изменение даты в инпуте
+    table.innerHTML = ""; //Обнуляем таблицу
+    start_day = input_start_date.value; //Находим начальную дату
+    difference_day = 0; //Обнуляем изменение даты
+    createTable(start_day, difference_day, count_day); //Перерисовывание таблицу
+});
 createTable(start_day, difference_day, count_day);
 function createTable(start_day, difference_day, count_day) { //Функция создания таблицы (день с которого начинать, разница в днях, кол-во дней)
     if (start_day == "") {
@@ -99,7 +92,7 @@ function createTable(start_day, difference_day, count_day) { //Функция с
     st_dt = dtz.toLocaleDateString(); //Начальный день
     dtz.setDate(dtz.getDate() + count_day);
     end_dt = dtz.toLocaleDateString(); //Конечный день
-    if (document.location.href == url_base) input_start_date.value = `${dt.toJSON().substr(0, 10)}`;
+    input_start_date.value = `${dt.toJSON().substr(0, 10)}`;
     html = "";
     tds = "";
     arr_day = [];
@@ -132,7 +125,7 @@ function createTable(start_day, difference_day, count_day) { //Функция с
                 tds += `<td class='td' style="padding: 5px 7px 15px 7px; vertical-align: top;" onclick='open_reg_info(event, ${i}, "${arr_day[j]}")'>`;
                 if (data[i][arr_day[j]] != undefined) {
                     for (c in data[i][arr_day[j]]) {
-                        padding = 7.5;
+                        padding = 12;
                         tds += `<div 
                         class='die' 
                         onclick='open_event_info(event, ${i}, "${arr_day[j]}", ${c})' 
@@ -142,14 +135,13 @@ function createTable(start_day, difference_day, count_day) { //Функция с
                         >` + data[i][arr_day[j]][c].time.substr(0, 5) + " " + data[i][arr_day[j]][c].event_name + "</div>";
                     }
                 }
-                //
                 tds += "</td>";
             }
             html += "<tr>" + tds + "</tr>";
         }
         table.innerHTML = table.innerHTML + html;
     });
-    if (document.location.href == url_base) loader_div.innerHTML = "";
+    loader_div.innerHTML = "";
 }
 
 function name_day(i) {
@@ -171,7 +163,7 @@ function open_event_info(event, i, day, c) {
     if (arr_nested_activities.length != 0) {
         list_nested_activities = `<tr><td class="up_cell"><text>Вложенные мероприятия:</text></td><td>`;
         for (j in arr_nested_activities) {
-            list_nested_activities += `<text style="cursor: pointer;" onclick="openBook2Read(event, ${j})">${arr_nested_activities[j].time_start}-${arr_nested_activities[j].time_end} ${arr_nested_activities[j].event_name}</text><br>`;
+            list_nested_activities += `<div class="die_nested" style="background-color: #${arr_nested_activities[j].color}" onclick="openBook2Read(event, ${j})">${arr_nested_activities[j].time_start}-${arr_nested_activities[j].time_end} ${arr_nested_activities[j].event_name}</div>`;
         }
         list_nested_activities += `</td></tr>`;
     }
@@ -264,7 +256,7 @@ function open_reg_info(event, i, day) {
                     </table>
                 </div>
                 <div class="button_div">
-                    <a href="/authorization/sign_in.html" class="button_book">Войти</a>
+                    <a href="https://hops.mypew.ru/authorization/sign_in.html" class="button_book">Войти</a>
                 </div>
             </div>`;
             event.stopPropagation();
@@ -356,7 +348,7 @@ function open_reg_info(event, i, day) {
                 </div>
             </div>`;
             nested_activities = document.getElementById('nested_activities');
-            add_nested_activities = `<text class="add_nested_activities" onclick="addNestedActivities(event)">+ добавить вложенное мероприятие</text>`;
+            add_nested_activities = `<div class="die_nested" onclick="addNestedActivities(event)">+ добавить вложенное мероприятие</div>`;
             nested_activities.innerHTML = add_nested_activities;
             input_number = document.getElementById('input_number');
             input_number.value = i;
@@ -511,11 +503,17 @@ function book2(event) {
         return;
     }
     closePopup2(event);
-    arr_nested_activities.push({ "time_start": input_start_time_2.value, "time_end": input_end_time_2.value, "event_type": input_event_type_2.value, "event_name": input_event_name_2.value, "speaker_fio": input_speaker_2.value, "event_description": input_description_2.value });
+    backgroun_color = '6f6f6f';
+    for (i in arr_event_type) {
+        if (arr_event_type[i].name == input_event_type_2.value) {
+            background_color = arr_event_type[i].color;
+        }
+    }
+    arr_nested_activities.push({ "time_start": input_start_time_2.value, "time_end": input_end_time_2.value, "event_type": input_event_type_2.value, "event_name": input_event_name_2.value, "speaker_fio": input_speaker_2.value, "event_description": input_description_2.value, "color": background_color });
     html_text = "";
     console.log(arr_nested_activities);
     for (i in arr_nested_activities) {
-        html_text += `<text style="cursor: pointer;" onclick="openBook2Edit(event, ${i})">${arr_nested_activities[i].time_start}-${arr_nested_activities[i].time_end} ${arr_nested_activities[i].event_name}</text><br>`;
+        html_text += `<div class="die_nested" style="background-color: #${arr_nested_activities[i].color}" onclick="openBook2Edit(event, ${i})">${arr_nested_activities[i].time_start}-${arr_nested_activities[i].time_end} ${arr_nested_activities[i].event_name}</div>`;
     }
     nested_activities.innerHTML = html_text + add_nested_activities;
 }
@@ -533,11 +531,29 @@ function book2Save(event, index) {
         return;
     }
     closePopup2(event);
-    arr_nested_activities[index] = { "time_start": input_start_time_2.value, "time_end": input_end_time_2.value, "event_type": input_event_type_2.value, "event_name": input_event_name_2.value, "speaker_fio": input_speaker_2.value, "event_description": input_description_2.value };
+    backgroun_color = '6f6f6f';
+    for (i in arr_event_type) {
+        if (arr_event_type[i].name == input_event_type_2.value) {
+            background_color = arr_event_type[i].color;
+        }
+    }
+    arr_nested_activities[index] = { "time_start": input_start_time_2.value, "time_end": input_end_time_2.value, "event_type": input_event_type_2.value, "event_name": input_event_name_2.value, "speaker_fio": input_speaker_2.value, "event_description": input_description_2.value, "color": background_color };
     html_text = "";
     console.log(arr_nested_activities);
     for (i in arr_nested_activities) {
-        html_text += `<text style="cursor: pointer;" onclick="openBook2Edit(event, ${i})">${arr_nested_activities[i].time_start}-${arr_nested_activities[i].time_end} ${arr_nested_activities[i].event_name}</text><br>`;
+        html_text += `<div class="die_nested" style="background-color: #${arr_nested_activities[i].color}" onclick="openBook2Edit(event, ${i})">${arr_nested_activities[i].time_start}-${arr_nested_activities[i].time_end} ${arr_nested_activities[i].event_name}</div>`;
+    }
+    nested_activities.innerHTML = html_text + add_nested_activities;
+}
+
+function book2Del(event, index) {
+    event.stopPropagation();
+    closePopup2(event);
+    arr_nested_activities.splice(index, 1);
+    html_text = "";
+    console.log(arr_nested_activities);
+    for (i in arr_nested_activities) {
+        html_text += `<div class="die_nested" style="background-color: #${arr_nested_activities[i].color}" onclick="openBook2Edit(event, ${i})">${arr_nested_activities[i].time_start}-${arr_nested_activities[i].time_end} ${arr_nested_activities[i].event_name}</div>`;
     }
     nested_activities.innerHTML = html_text + add_nested_activities;
 }
@@ -587,6 +603,7 @@ function openBook2Edit(event, index) {
             </div>
             <div class="button_div">
                 <button onclick="book2Save(event, ${index})" class="button_book">Сохранить</button>
+                <button onclick="book2Del(event, ${index})" class="button_book" style="background-color: #d95a3e;">Удалить</button>
             </div>
         </div>
     </div>`;
@@ -648,7 +665,6 @@ function openBook2Read(event, index) {
             </div>
         </div>
     </div>`;
-    event.stopPropagation();
     popup_2 = document.getElementById('popup_2');
     popup_back_2 = document.getElementById('popup_back_2');
     popup_2.addEventListener('click', (event) => {
@@ -660,20 +676,18 @@ function openBook2Read(event, index) {
     });
 }
 
-if (document.location.href == url_base) {
-    header_logo = document.getElementById('header_logo');
-    header = document.getElementById('header');
-    arrow_menu = document.getElementById('arrow_menu');
-    header_logo.addEventListener('click', (event) => {
-        event.stopPropagation();
-        header.style.transform = "translateX(-320px)";
-        table.style.margin = "5px 2vw 2vw 2vw";
-        arrow_menu.style.opacity = '1';
-    })
-    arrow_menu.addEventListener('click', (event) => {
-        event.stopPropagation();
-        arrow_menu.style.opacity = '0';
-        header.style.transform = "translateX(0px)";
-        table.style.margin = "5px 2vw 2vw calc(2vw + 300px)";
-    })
-}
+header_logo = document.getElementById('header_logo');
+header = document.getElementById('header');
+arrow_menu = document.getElementById('arrow_menu');
+header_logo.addEventListener('click', (event) => {
+    event.stopPropagation();
+    header.style.transform = "translateX(-320px)";
+    table.style.margin = "5px 2vw 2vw 2vw";
+    arrow_menu.style.opacity = '1';
+})
+arrow_menu.addEventListener('click', (event) => {
+    event.stopPropagation();
+    arrow_menu.style.opacity = '0';
+    header.style.transform = "translateX(0px)";
+    table.style.margin = "5px 2vw 2vw calc(2vw + 300px)";
+})
